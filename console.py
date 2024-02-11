@@ -63,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
 
         Usage: create <class_name>
         """
-        self.__storage.reload()
         args = shlex.split(user_input)
         if len(args) == 0:
             print("** class name missing **")
