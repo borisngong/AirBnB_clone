@@ -13,8 +13,8 @@ import shlex
 
 class HBNBCommand(cmd.Cmd):
     """
-    The program can be interfaced with through the command-line interface
-    provided by the HBNBCommand class
+   The program can be interfaced with through the command-line interface
+   provided by the HBNBCommand class
     """
 
     prompt = "(hbnb) "
@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, user_input):
         """
-        Establishes a new instance of the user-specified class.
+       Establishes a new instance of the user-specified class.
 
         Usage: create <class_name>
         """
@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, user_input):
         """
         shows all instances or instances of a particular class string
-        representation
+        represention
 
         Usage: all [class_name]
         """
@@ -147,31 +147,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, user_input):
         """
-        Updates an instance's attributes using the class name,
-        instance ID, attribute name, and new attribute value as
-        input.
-
-        Usage: update <class_name> <instance_id> <attribute_name>
-        <attribute_value>
+        Responsible for updating an instance's attributes using the class
+        name, instance ID, attribute name, and new attribute value as input.
+        Usage:
+        update <class_name> <instance_id> <attribute_name> <attribute_value>
         """
         args = shlex.split(user_input)
         if len(args) == 0:
             print("** class name missing **")
             return
-        targetclass = args[0]
+        target_class = args[0]
         if target_class not in self.__available_classes:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
             print("** instance id missing **")
             return
-        instance_id = args[1]
-        key = target_class + '.' + instance_id
+        obj_id = args[1]
+        key = target_class + '.' + obj_id
         if key not in self.__storage.all():
             print("** no instance found **")
             return
-        target_instance = self.__storage.all()[key]
-
         if len(args) < 3:
             print("** attribute name missing **")
             return
@@ -180,15 +176,16 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
         attr_value_str = args[3]
+        obj = self.__storage.all()[key]
 
         # Create the attribute if it doesn't exist
-        if not hasattr(target_instance, attr_name):
-            setattr(target_instance, attr_name, "")
+        if not hasattr(obj, attr_name):
+            setattr(obj, attr_name, "")
 
-        attr_type = type(getattr(target_instance, attr_name))
+        attr_type = type(getattr(obj, attr_name))
         try:
             attr_value = attr_type(attr_value_str)
-            setattr(target_instance, attr_name, attr_value)
+            setattr(obj, attr_name, attr_value)
             self.__storage.save()
         except Exception:
             pass
