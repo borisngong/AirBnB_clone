@@ -13,8 +13,8 @@ import shlex
 
 class HBNBCommand(cmd.Cmd):
     """
-   The program can be interfaced with through the command-line interface
-   provided by the HBNBCommand class
+    The program can be interfaced with through the command-line interface
+    provided by the HBNBCommand class
     """
 
     prompt = "(hbnb) "
@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, user_input):
         """
-       Establishes a new instance of the user-specified class.
+        Establishes a new instance of the user-specified class.
 
         Usage: create <class_name>
         """
@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, user_input):
         """
         shows all instances or instances of a particular class string
-        represention
+        representation
 
         Usage: all [class_name]
         """
@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        target_class = args[0]
+        targetclass = args[0]
         if target_class not in self.__available_classes:
             print("** class doesn't exist **")
             return
