@@ -7,6 +7,11 @@ import json
 import os
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
@@ -26,7 +31,7 @@ class FileStorage:
         """
         return self.__objects
 
-    def new(self, obj):
+    def new(self, in_obj):
         """
         introduces a new object into the dictionary of __objects.
 
@@ -34,8 +39,8 @@ class FileStorage:
             obj: The item that has to be included in
             the dictionary.
         """
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        key = "{}.{}".format(in_obj.__class__.__name__, in_obj.id)
+        self.__objects[key] = in_obj
 
     def save(self):
         """
@@ -51,22 +56,29 @@ class FileStorage:
 
     def reload(self):
         """
-        loads the contents of the file again.JSON data set.
-        Takes the serialized data from the file, deserializes it,
-        and adds the deserialized objects to the __objects dictionary
-        after clearing the dictionary
+        loads the file's contents once more.JSON dataset.
+        deserializes the serialized data from the file and,
+        after the dictionary has been cleared, adds the deserialized
+        objects to the __objects dictionary.
         """
         if os.path.exists(self.__file_path):
             try:
                 with open(self.__file_path, "r") as file:
                     serialized_data = json.load(file)
                     for key, obj_dict in serialized_data.items():
-                        class_name, obj_id = key.split(".")
-                        if class_name == User:
+                        target_class, obj_id = key.split(".")
+                        if target_class == "User":
                             obj = User(**obj_dict)
-                        else:
-                            class_obj = eval(class_name)
-                        obj = class_obj(**obj_dict)
+                        elif target_class == "Place":
+                            obj = Place(**obj_dict)
+                        elif target_class == "State":
+                            obj = State(**obj_dict)
+                        elif target_class == "City":
+                            obj = City(**obj_dict)
+                        elif target_class == "Amenity":
+                            obj = Amenity(**obj_dict)
+                        elif target_class == "Review":
+                            obj = Review(**obj_dict)
                         self.__objects[key] = obj
             except Exception:
                 pass
