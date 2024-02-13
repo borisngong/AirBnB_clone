@@ -4,6 +4,11 @@ import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 import shlex
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,8 +17,39 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = '(hbnb) '
-    __classes = {"BaseModel": BaseModel}
+
     __storage = FileStorage()
+    __classes = {
+        "BaseModel": BaseModel,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
+    }
+
+    def do_EOF(self, user_input):
+        """
+        Command responsible for exiting the program elegantly when
+        the user enters 'EOF' (Ctrl+D).
+        """
+        print()
+        return True
+
+    def do_quit(self, user_input):
+        """
+        Exit the program when the user enters 'quit'.
+        """
+        return True
+
+    def help_quit(self):
+        """"""
+        print("Quit command to exit the program")
+
+    def emptyline(self):
+        """
+        Called when an empty line is entered in the prompt.
+        """
 
     def do_create(self, line):
         """
@@ -146,32 +182,6 @@ class HBNBCommand(cmd.Cmd):
             self.__storage.save()
         except Exception:
             pass
-
-    def do_EOF(self, user_input):
-        """
-        Command responsible for exiting the program elegantly when
-        the user enters 'EOF' (Ctrl+D).
-        """
-        print()
-        return True
-
-    def do_quit(self, user_input):
-        """
-        Exit the program when the user enters 'quit'.
-        """
-        return True
-
-    def help_quit(self):
-        """
-        Provide help information for the 'quit' command.
-        """
-        print("Quit command to exit the program")
-
-    def emptyline(self):
-        """
-        Called when an empty line is entered in the prompt.
-        """
-        pass
 
 
 if __name__ == '__main__':
