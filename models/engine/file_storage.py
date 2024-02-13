@@ -23,6 +23,19 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    __classes = {
+        "BaseModel": BaseModel,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
+    }
+
+    def __init__(self):
+        """Initialize a new FileStorage instance."""
+        pass
+
     def all(self):
         """
         Returns the __objects dictionary, which includes every item that
