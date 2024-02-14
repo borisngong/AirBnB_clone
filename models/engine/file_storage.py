@@ -1,18 +1,9 @@
 #!/usr/bin/python3
-"""
-Module for working with the FileStorage class
-"""
-
+"""Module for working with class FileStorage"""
 import json
 import os
 from models.base_model import BaseModel
 from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-
 
 class FileStorage:
     """
@@ -23,19 +14,6 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    __classes = {
-        "BaseModel": BaseModel,
-        "Place": Place,
-        "State": State,
-        "City": City,
-        "Amenity": Amenity,
-        "Review": Review
-    }
-
-    def __init__(self):
-        """Initialize a new FileStorage instance."""
-        pass
-
     def all(self):
         """
         Returns the __objects dictionary, which includes every item that
@@ -44,7 +22,7 @@ class FileStorage:
         """
         return self.__objects
 
-    def new(self, in_obj):
+    def new(self, obj):
         """
         introduces a new object into the dictionary of __objects.
 
@@ -52,8 +30,8 @@ class FileStorage:
             obj: The item that has to be included in
             the dictionary.
         """
-        key = "{}.{}".format(in_obj.__class__.__name__, in_obj.id)
-        self.__objects[key] = in_obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
         """
@@ -79,19 +57,12 @@ class FileStorage:
                 with open(self.__file_path, "r") as file:
                     serialized_data = json.load(file)
                     for key, obj_dict in serialized_data.items():
-                        target_class, obj_id = key.split(".")
-                        if target_class == "User":
+                        class_name, obj_id = key.split(".")
+                        if class_name == "User":
                             obj = User(**obj_dict)
-                        elif target_class == "Place":
-                            obj = Place(**obj_dict)
-                        elif target_class == "State":
-                            obj = State(**obj_dict)
-                        elif target_class == "City":
-                            obj = City(**obj_dict)
-                        elif target_class == "Amenity":
-                            obj = Amenity(**obj_dict)
-                        elif target_class == "Review":
-                            obj = Review(**obj_dict)
+                        else:
+                            class_obj = eval(class_name)
+                            obj = class_obj(**obj_dict)
                         self.__objects[key] = obj
             except Exception:
                 pass
